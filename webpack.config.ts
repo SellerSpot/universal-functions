@@ -22,7 +22,7 @@ const webpackConfiguration = (env: {
             filename: 'index.js',
             libraryTarget: 'umd',
             umdNamedDefine: true,
-            library: 'database-models',
+            library: 'universal-functions',
             globalObject: 'this', // refernceError: self isnot defined fix
         },
         module: {

@@ -1,7 +1,7 @@
 {
-    "name": "@sellerspot/universal-types",
+    "name": "@sellerspot/universal-functions",
     "version": "1.6.0",
-    "description": "Contains all common type definitions shared across all applications in the SellerSpot suite.",
+    "description": "Contains all common functions and values shared across all applications in the SellerSpot ecosystem.",
     "main": "dist/index.js",
     "scripts": {
         "dev": "webpack --mode development --env development",
@@ -12,11 +12,11 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/SellerSpot/universal-types.git"
+        "url": "git+https://github.com/SellerSpot/universal-functions.git"
     },
     "keywords": [
         "sellerspot",
-        "universal-types"
+        "universal-functions"
     ],
     "author": "RohitRajP",
     "contributors": [
@@ -33,9 +33,9 @@
     ],
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/SellerSpot/universal-types/issues"
+        "url": "https://github.com/SellerSpot/universal-functions/issues"
     },
-    "homepage": "https://github.com/SellerSpot/universal-types#readme",
+    "homepage": "https://github.com/SellerSpot/universal-functions#readme",
     "devDependencies": {
         "@types/webpack": "4.41.25",
         "@types/webpack-node-externals": "^2.5.0",

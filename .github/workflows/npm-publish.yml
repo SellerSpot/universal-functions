@@ -1,4 +1,4 @@
-name: Sellerspot Universal Types Npm Package
+name: Sellerspot universal-functions Npm Package
 
 on:
     workflow_dispatch: # for Run workflow button
