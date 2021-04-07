@@ -1,59 +1,36 @@
-import chalk from 'chalk';
+import { transports, config, format, createLogger } from 'winston';
+import * as Transport from 'winston-transport';
 
-export type TLoggerTypes =
-    | 'common'
-    | 'error'
-    | 'warning'
-    | 'express'
-    | 'socketio'
-    | 'mongoose'
-    | 'debug';
+const myConsoleFormat = format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`);
 
-const loggerBase = (message: string): void => {
-    console.log(message);
-};
+const transportList: Transport[] = [];
+if (process.env.ENV !== 'development') {
+    transportList.push(
+        new transports.File({
+            filename: 'logs/APPLICATION_ERROR.log',
+            level: 'error',
+        }),
+    );
+    transportList.push(
+        new transports.File({ filename: 'logs/APPLICATION_INFO.log', level: 'info' }),
+    );
+    transportList.push(new transports.File({ filename: 'logs/ACCESS.log', level: 'http' }));
+} else {
+    transportList.push(
+        new transports.Console({
+            format: format.combine(format.colorize({ all: true }), myConsoleFormat),
+        }),
+    );
+}
 
-export const logger: { [k in TLoggerTypes]: (...messages: unknown[]) => void } = {
-    common: (...messages: unknown[]) =>
-        loggerBase(
-            `${chalk.blue.bold(`common:`)} ${chalk.white(
-                messages.map((message) => JSON.stringify(message)).join(' '),
-            )}`,
-        ),
-    error: (...messages: unknown[]) =>
-        loggerBase(
-            `${chalk.red.bold(`error:`)} ${chalk.white(
-                messages.map((message) => JSON.stringify(message)).join(' '),
-            )}`,
-        ),
-    express: (...messages: unknown[]) =>
-        loggerBase(
-            `${chalk.green.bold(`express:`)} ${chalk.white(
-                messages.map((message) => JSON.stringify(message)).join(' '),
-            )}`,
-        ),
-    mongoose: (...messages: unknown[]) =>
-        loggerBase(
-            `${chalk.yellow.bold(`mongoose:`)} ${chalk.white(
-                messages.map((message) => JSON.stringify(message)).join(' '),
-            )}`,
-        ),
-    socketio: (...messages: unknown[]) =>
-        loggerBase(
-            `${chalk.magenta.bold(`socketio:`)} ${chalk.white(
-                messages.map((message) => JSON.stringify(message)).join(' '),
-            )}`,
-        ),
-    warning: (...messages: unknown[]) =>
-        loggerBase(
-            `${chalk.bgYellow.black.bold(`warning:`)} ${chalk.white(
-                messages.map((message) => JSON.stringify(message)).join(' '),
-            )}`,
-        ),
-    debug: (...messages: unknown[]) =>
-        loggerBase(
-            `${chalk.bgBlue.white.bold(`debug:`)} ${chalk.white(
-                messages.map((message) => JSON.stringify(message)).join(' '),
-            )}`,
-        ),
-};
+export const logger = createLogger({
+    level: process.env.ENV === 'development' ? 'debug' : 'http',
+    levels: config.npm.levels,
+    format: format.combine(
+        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+        format.errors({ stack: true }),
+        format.splat(),
+        format.json(),
+    ),
+    transports: transportList,
+});

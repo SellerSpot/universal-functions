@@ -1,8 +1,10 @@
-import { RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-const authHandler: RequestHandler = (req, res, next) => {
-    // req auth validation logic goes here
+import { NotAuthorizedError } from '../errors';
+
+export const auth = (req: Request, _: Response, next: NextFunction): void => {
+    if (!req.currentTenant) {
+        throw new NotAuthorizedError();
+    }
     next();
 };
-
-export default authHandler;
