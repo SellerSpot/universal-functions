@@ -16,7 +16,7 @@ export const validateSchema = (resourceSchema: AnySchema) => async (
     } catch (e) {
         logger.error(`Error in schema validation ${e}`);
         if (isError(e)) {
-            const validationError = e as ValidationError;
+            const validationError = <ValidationError>e;
             throw new RequestValidationError(validationError.details);
         }
         throw new BadRequestError(ERROR_CODE.VALIDATION_ERROR);
