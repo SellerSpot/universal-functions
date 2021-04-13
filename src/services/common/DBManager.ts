@@ -1,12 +1,10 @@
-export interface IDbManagerProps {
-    setTenantDb: (tenantId: string) => void;
+export class IDbManagerProps {
+    setTenantDb: typeof DbManager.setTenantDb;
 }
 
 export class DbManager {
-    public static INSTANCE: DbManager;
-    setTenantDb: (tenantId: string) => void;
-    constructor(props: IDbManagerProps) {
-        this.setTenantDb = props.setTenantDb;
-        DbManager.INSTANCE = this;
+    public static setTenantDb: (tenantId: string) => void;
+    public static initializeDbManager(props: IDbManagerProps): void {
+        DbManager.setTenantDb = props.setTenantDb;
     }
 }

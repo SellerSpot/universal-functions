@@ -9,7 +9,7 @@
         "build:dev": "webpack --mode development --env production && yalc push",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
-        "yalc:link": "",
+        "yalc:link": "yalc link @sellerspot/universal-types",
         "yalc:remove": "yalc remove --all",
         "prettier": "prettier --write src",
         "lint-staged": "lint-staged",
@@ -56,6 +56,7 @@
         "*.{ts,tsx}": "eslint --fix --max-warnings 0"
     },
     "devDependencies": {
+        "@sellerspot/universal-functions": "^1.2.0",
         "@sellerspot/universal-types": "^1.7.0",
         "@types/cookie": "^0.4.0",
         "@types/cookie-parser": "^1.4.2",
@@ -74,8 +75,8 @@
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-prettier": "^3.3.0",
         "fork-ts-checker-webpack-plugin": "^6.0.7",
-        "joi": "^17.4.0",
         "husky": "^6.0.0",
+        "joi": "^17.4.0",
         "lint-staged": "^10.5.4",
         "prettier": "^2.2.1",
         "ts-loader": "^8.0.12",
@@ -90,9 +91,9 @@
     "dependencies": {
         "cookie-parser": "^1.4.5",
         "cors": "^2.8.5",
+        "jsonwebtoken": "^8.5.1",
         "morgan": "^1.10.0",
-        "winston": "^3.3.3",
-        "jsonwebtoken": "^8.5.1"
+        "winston": "^3.3.3"
     },
     "peerDependencies": {
         "cookie": "^0.4.0",

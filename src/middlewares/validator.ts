@@ -1,13 +1,13 @@
 import { AnySchema, ValidationError, isError, isSchema } from 'joi';
-import { Request, Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 import { logger } from '../utilities';
 import { RequestValidationError, BadRequestError } from '../errors';
 import { ERROR_CODE } from '@sellerspot/universal-types';
 
-export const validateSchema = (resourceSchema: AnySchema) => async (
-    req: Request,
-    _: Response,
-    next: NextFunction,
+export const validateSchema = (resourceSchema: AnySchema): RequestHandler => async (
+    req,
+    _,
+    next,
 ): Promise<void> => {
     const resource = req.body;
     try {

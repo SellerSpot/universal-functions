@@ -15,7 +15,6 @@ export class JWTManager {
     static compare(suppliedToken: string): ITenantJWTToken {
         try {
             const token = <ITenantJWTToken>jwt.verify(suppliedToken, process.env.APP_SECRET);
-            console.log(token);
             return token;
         } catch (err) {
             logger.error(`Error while getting jwt token`);

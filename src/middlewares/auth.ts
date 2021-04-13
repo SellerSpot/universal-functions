@@ -17,7 +17,7 @@ export const auth: RequestHandler = (req, _, next): void => {
         const token = tenantIdVsToken[currentUser];
         const payload = <ITenantJWTToken>JWTManager.compare(token);
         req.currentTenant = payload;
-        DbManager.INSTANCE.setTenantDb(req.currentTenant.id);
+        DbManager.setTenantDb(req.currentTenant.id);
         return next();
     }
     throw new NotAuthorizedError();
