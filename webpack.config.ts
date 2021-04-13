@@ -12,7 +12,6 @@ const webpackConfiguration = (env: {
     const isProduction = env.production ? true : false;
     return {
         entry: './src',
-        externalsPresets: { node: true },
         externals: [nodeExternals()],
         resolve: {
             extensions: ['.ts', '.d.ts'],
