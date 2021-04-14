@@ -64,7 +64,7 @@ jobs:
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
-            - name: Push Changes to Master
+            - name: Push changes to master
               run: |
                   git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
                   git push origin master -f
