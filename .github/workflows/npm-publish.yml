@@ -70,9 +70,12 @@ jobs:
                   git push origin master -f
                   git push --tags
 
-            - name: Trigger version bump on dependant repositories
+            - name: Trigger version bump on dependant repos
               run: |
-                  curl --request POST \
-                  --url 'https://api.github.com/repos/sellerspot/auth-server/dispatches' \
-                  --header 'authorization: Bearer ${{ secrets.GH_API_FULL_ACCESS_TOKEN }}' \
-                  --data '{"event_type": "dispatch-version-bump"}'
+                  for i in $(cat urls.txt); do
+                      echo "URL: $i"
+                      curl --request POST \
+                      --url 'https://api.github.com/repos/sellerspot/$i/dispatches' \
+                      --header 'authorization: Bearer ${{ secrets.GH_API_FULL_ACCESS_TOKEN }}' \
+                      --data '{"event_type": "dispatch-version-bump"}'
+                  done
