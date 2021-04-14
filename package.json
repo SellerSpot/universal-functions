@@ -1,6 +1,6 @@
 {
     "name": "@sellerspot/universal-functions",
-    "version": "1.5.3",
+    "version": "1.5.4",
     "description": "Contains all common functions and values shared across all applications in the SellerSpot ecosystem.",
     "main": "dist/index.js",
     "scripts": {
