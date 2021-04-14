@@ -45,7 +45,7 @@ jobs:
 
             - name: Clear Git working directory
               continue-on-error: true
-              run: git add . && git commit -m "Version update clear working directory" --no-verify --allow-empty
+              run: git add . && git commit -m "Version update clear working directory" --no-verify
 
             - name: Major Version
               if: contains(github.event.head_commit.message, '@major') || github.event.inputs.publishType == 'major'
@@ -72,10 +72,7 @@ jobs:
 
             - name: Trigger version bump on dependant repositories
               run: |
-                  curl --location --request POST 'https://api.github.com/repos/sellerspot/auth-server/dispatches' \
-                    --header 'Accept: application/vnd.github.v3+json' \
-                    --header 'Content-Type: application/json' \
-                    --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-                    --data-raw '{
-                        "event_type": "dispatch-version-bump"
-                      }'
+                  curl --request POST \
+                  --url 'https://api.github.com/repos/sellerspot/auth-server/dispatches' \
+                  --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+                  --data '{"event_type": "dispatch-version-bump"}'
