@@ -74,5 +74,5 @@ jobs:
               run: |
                   curl --request POST \
                   --url 'https://api.github.com/repos/sellerspot/auth-server/dispatches' \
-                  --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+                  --header 'authorization: Bearer ${{ secrets.GH_FULL_ACCESS_TOKEN }}' \
                   --data '{"event_type": "dispatch-version-bump"}'
