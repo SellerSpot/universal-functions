@@ -72,7 +72,7 @@ jobs:
 
             - name: Trigger version bump on dependant repos
               run: |
-                  for i in $(cat urls.txt); do
+                  for i in $(cat dependant-repos.txt); do
                       echo "URL: $i"
                       curl --request POST \
                       --url 'https://api.github.com/repos/sellerspot/$i/dispatches' \
