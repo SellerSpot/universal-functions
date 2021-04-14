@@ -75,7 +75,7 @@ jobs:
                   for i in $(cat dependant-repos.txt); do
                       echo "URL: $i"
                       curl --request POST \
-                      --url 'https://api.github.com/repos/sellerspot/$i/dispatches' \
+                      --url "https://api.github.com/repos/sellerspot/$i/dispatches" \
                       --header 'authorization: Bearer ${{ secrets.GH_API_FULL_ACCESS_TOKEN }}' \
                       --data '{"event_type": "dispatch-version-bump"}'
                   done
