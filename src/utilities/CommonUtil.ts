@@ -4,6 +4,13 @@ class CommonUtil {
         delete newObj[propertyName];
         return newObj;
     }
+    static async introduceDelay(delay = 4000): Promise<boolean> {
+        return new Promise((resolve) =>
+            setTimeout(() => {
+                resolve(true);
+            }, delay),
+        );
+    }
 }
 
 export { CommonUtil };

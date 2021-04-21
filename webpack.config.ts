@@ -12,7 +12,7 @@ const webpackConfiguration = (env: {
     const isProduction = env.production ? true : false;
     return {
         entry: './src',
-        externalsPresets: { node: true },
+        target: 'node',
         externals: [nodeExternals()],
         resolve: {
             extensions: ['.ts', '.d.ts'],
@@ -23,7 +23,7 @@ const webpackConfiguration = (env: {
             libraryTarget: 'umd',
             umdNamedDefine: true,
             library: 'universal-functions',
-            globalObject: 'this', // refernceError: self isnot defined fix
+            globalObject: 'this', // refernceError: self is not defined fix
         },
         module: {
             rules: [
