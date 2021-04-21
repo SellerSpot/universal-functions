@@ -23,7 +23,7 @@ const webpackConfiguration = (env: {
             libraryTarget: 'umd',
             umdNamedDefine: true,
             library: 'universal-functions',
-            globalObject: 'this', // refernceError: self isnot defined fix
+            globalObject: 'this', // refernceError: self is not defined fix
         },
         module: {
             rules: [
