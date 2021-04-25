@@ -1,4 +1,4 @@
-export enum ServerConstant {
+export enum PackageConstant {
     /**
      * expressed in seconds 2days (172800)
      */

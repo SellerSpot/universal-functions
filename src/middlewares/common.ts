@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { Application, json } from 'express';
-import { morganMiddleware } from '../middleware/morgan';
+import { morganMiddleware } from './morgan';
 
 export const applyCommon = (app: Application): void => {
     app.use(json());

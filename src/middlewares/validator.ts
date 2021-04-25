@@ -1,8 +1,8 @@
 import { ERROR_CODE } from '@sellerspot/universal-types';
 import { RequestHandler } from 'express';
 import { AnySchema, isError, isSchema, ValidationError } from 'joi';
-import { BadRequestError, RequestValidationError } from '../error';
-import { logger } from '../utility';
+import { BadRequestError, RequestValidationError } from '../errors';
+import { logger } from '../utilities';
 
 /**
  *

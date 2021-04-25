@@ -1,7 +1,7 @@
 import { ERROR_CODE, IResponse, STATUS_CODE } from '@sellerspot/universal-types';
 import { ErrorRequestHandler } from 'express';
-import { CustomError } from '../error';
-import { logger } from '../utility';
+import { CustomError } from '../errors';
+import { logger } from '../utilities';
 
 export const errorHandler: ErrorRequestHandler = (err, _, res, __): Response | void => {
     if (err instanceof CustomError) {
