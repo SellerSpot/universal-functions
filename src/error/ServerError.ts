@@ -1,5 +1,5 @@
+import { ERROR_CODE, IErrorResponse, STATUS_CODE } from '@sellerspot/universal-types';
 import { CustomError } from './CustomError';
-import { IErrorResponse, STATUS_CODE, ERROR_CODE } from '@sellerspot/universal-types';
 
 export class ServerError extends CustomError {
     statusCode = STATUS_CODE.INTERNAL_SERVER_ERROR;

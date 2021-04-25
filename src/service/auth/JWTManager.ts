@@ -1,6 +1,8 @@
+import { ERROR_CODE, ITenantJWTToken } from '@sellerspot/universal-types';
 import jwt from 'jsonwebtoken';
-import { ITenantJWTToken, ERROR_CODE } from '@sellerspot/universal-types';
-import { logger, error } from '../..';
+import { ServerConstant } from '../../config/constant';
+import { NotAuthorizedError } from '../../error';
+import { logger } from '../../utility';
 
 export class JWTManager {
     static createToken(payload: ITenantJWTToken): string {
@@ -9,6 +11,7 @@ export class JWTManager {
                 ...payload,
             },
             process.env.APP_SECRET,
+            { expiresIn: ServerConstant.JWT_EXPIRE_TIME },
         );
         return token;
     }
@@ -18,7 +21,7 @@ export class JWTManager {
             return token;
         } catch (err) {
             logger.error(`Error while getting jwt token`);
-            throw new error.NotAuthorizedError(ERROR_CODE.INVALID_TOKEN, 'Token Invalid');
+            throw new NotAuthorizedError(ERROR_CODE.INVALID_TOKEN, 'Token Invalid');
         }
     }
 }

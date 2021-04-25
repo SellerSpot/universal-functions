@@ -1,8 +1,8 @@
-import { RequestHandler } from 'express';
-import { NotAuthorizedError } from '../errors';
-import { JWTManager } from '../services/auth';
-import { logger } from '../utilities';
 import { ITenantJWTToken } from '@sellerspot/universal-types';
+import { RequestHandler } from 'express';
+import { NotAuthorizedError } from '../error';
+import { JWTManager } from '../service/auth';
+import { logger } from '../utility';
 
 export const auth: RequestHandler = (req, _, next): void => {
     if (!req.cookies || !req.headers['current-tenant']) {

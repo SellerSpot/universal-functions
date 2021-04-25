@@ -1,9 +1,9 @@
-import path from 'path';
-import webpack, { Configuration } from 'webpack';
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import WebpackShellPluginNext from 'webpack-shell-plugin-next';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import path from 'path';
+import { Configuration } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
+import WebpackShellPluginNext from 'webpack-shell-plugin-next';
 
 const webpackConfiguration = (env: {
     production?: boolean;
@@ -43,16 +43,15 @@ const webpackConfiguration = (env: {
                     files: './src',
                 },
             }),
-            !isProduction
-                ? new WebpackShellPluginNext({
-                      onDoneWatch: {
-                          scripts: ['npm run build:dev'],
-                          blocking: false,
-                          parallel: true,
-                      },
-                      safe: true,
-                  })
-                : new webpack.DefinePlugin({}),
+            !isProduction &&
+                new WebpackShellPluginNext({
+                    onDoneWatch: {
+                        scripts: ['npm run build:dev'],
+                        blocking: false,
+                        parallel: true,
+                    },
+                    safe: true,
+                }),
         ],
         devtool: false,
         watch: !isProduction,

@@ -1,10 +1,10 @@
-import { transports, config, format, createLogger } from 'winston';
+import { config, createLogger, format, transports } from 'winston';
 import * as Transport from 'winston-transport';
 
 const myConsoleFormat = format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`);
 
 const transportList: Transport[] = [];
-if (process.env.ENV !== 'development') {
+if (process.env.ENV === 'production') {
     transportList.push(
         new transports.File({
             filename: 'logs/APPLICATION_ERROR.log',
@@ -26,6 +26,9 @@ if (process.env.ENV !== 'development') {
 export const logger = createLogger({
     level: process.env.ENV === 'development' ? 'debug' : 'http',
     levels: config.npm.levels,
+    defaultMeta: {
+        service: process.env.APP_NAME,
+    },
     format: format.combine(
         format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
         format.errors({ stack: true }),
