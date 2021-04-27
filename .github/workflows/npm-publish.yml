@@ -1,4 +1,4 @@
-name: Sellerspot universal-functions npm package publish
+name: Sellerspot npm package publish
 
 on:
     workflow_dispatch: # for Run workflow button
@@ -30,6 +30,7 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: '${{ steps.nvm.outputs.NVMRC }}'
+                  registry-url: https://registry.npmjs.org/
 
             - name: Create Git Directory If Not Exists
               continue-on-error: true
