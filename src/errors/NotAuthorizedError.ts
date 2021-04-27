@@ -1,5 +1,5 @@
+import { ERROR_CODE, IErrorResponse, STATUS_CODE } from '@sellerspot/universal-types';
 import { CustomError } from './CustomError';
-import { IErrorResponse, STATUS_CODE, ERROR_CODE } from '@sellerspot/universal-types';
 
 export class NotAuthorizedError extends CustomError {
     statusCode = STATUS_CODE.UNAUTHORIZED;

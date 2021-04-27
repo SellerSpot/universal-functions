@@ -1,4 +1,4 @@
-class CommonUtil {
+export class CommonUtil {
     static removeProperty<T, K extends keyof T>(obj: T, propertyName: K): T {
         const newObj: T = { ...obj };
         delete newObj[propertyName];
@@ -12,5 +12,3 @@ class CommonUtil {
         );
     }
 }
-
-export { CommonUtil };

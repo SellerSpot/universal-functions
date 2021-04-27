@@ -11,6 +11,7 @@
         "resolveJsonModule": true,
         "moduleResolution": "node",
         "downlevelIteration": true,
+        "skipLibCheck": true,
         "declaration": true,
         "declarationMap": true,
         "declarationDir": "./dist",
