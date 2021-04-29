@@ -52,8 +52,7 @@
     "homepage": "https://github.com/SellerSpot/universal-functions#readme",
     "lint-staged": {
         "*.{ts,tsx,less}": [
-            "prettier --write",
-            "git add"
+            "prettier --write"
         ],
         "!(*webpack.config).{ts,tsx}": "eslint --fix --max-warnings 0"
     },
