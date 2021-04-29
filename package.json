@@ -57,6 +57,7 @@
         "!(*webpack.config).{ts,tsx}": "eslint --fix --max-warnings 0"
     },
     "devDependencies": {
+        "@sellerspot/webpack-run-scripts-custom-plugin": "^1.17.3",
         "@types/cookie": "^0.4.0",
         "@types/cookie-parser": "^1.4.2",
         "@types/cors": "^2.8.10",
@@ -85,7 +86,6 @@
         "webpack": "^4.46.0",
         "webpack-cli": "^4.2.0",
         "webpack-node-externals": "^2.5.2",
-        "webpack-shell-plugin-next": "^1.2.0",
         "yalc": "^1.0.0-pre.50"
     },
     "dependencies": {
