@@ -17,7 +17,7 @@
         "husky:install": "husky install",
         "husky:pre-commit": "npm run lint-staged",
         "prepare": "npm run husky:install",
-        "update:packages": "npm install @sellerspot/universal-types && npm i -D @sellerspot/webpack-run-scripts-custom-plugin"
+        "update:packages": "npm install -D @sellerspot/universal-types @sellerspot/webpack-run-scripts-custom-plugin"
     },
     "repository": {
         "type": "git",
@@ -57,6 +57,7 @@
         "!(*webpack.config).{ts,tsx}": "eslint --fix --max-warnings 0"
     },
     "devDependencies": {
+        "@sellerspot/universal-types": "^1.8.6",
         "@sellerspot/webpack-run-scripts-custom-plugin": "^1.17.3",
         "@types/cookie": "^0.4.0",
         "@types/cookie-parser": "^1.4.2",
@@ -89,7 +90,6 @@
         "yalc": "^1.0.0-pre.50"
     },
     "dependencies": {
-        "@sellerspot/universal-types": "^1.8.6",
         "cookie-parser": "^1.4.5",
         "cors": "^2.8.5",
         "jsonwebtoken": "^8.5.1",
