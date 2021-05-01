@@ -1,6 +1,6 @@
-import { CustomError } from './CustomError';
-import { IErrorResponse, ERROR_CODE, STATUS_CODE } from '@sellerspot/universal-types';
+import { ERROR_CODE, IErrorResponse, STATUS_CODE } from '@sellerspot/universal-types';
 import { ValidationErrorItem } from 'joi';
+import { CustomError } from './CustomError';
 
 export class RequestValidationError extends CustomError {
     statusCode = STATUS_CODE.BAD_REQUEST;

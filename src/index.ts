@@ -1,4 +1,4 @@
-export * from './utilities';
+export * from './errors';
 export * as middleware from './middlewares';
-export * as error from './errors';
 export * from './services';
+export * from './utilities';

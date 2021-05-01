@@ -11,6 +11,12 @@ export class PasswordManager {
         return `${buf.toString('hex')}.${salt}`;
     }
 
+    /**
+     *
+     * @param storedPassword - password that is stored
+     * @param suppliedPassword - password that is supplied by client
+     * @returns isMatch
+     */
     static async compare(storedPassword: string, suppliedPassword: string): Promise<boolean> {
         const [hashedPassword, salt] = storedPassword.split('.');
         const buf = <Buffer>await scryptAsync(suppliedPassword, salt, 64);
