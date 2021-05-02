@@ -5,7 +5,7 @@ import { logger } from '../utilities';
 
 export const errorHandler: ErrorRequestHandler = (err, _, res, __): Response | void => {
     if (err instanceof CustomError) {
-        res.status(err.statusCode).send({ status: false, errors: err.serializeErrors() });
+        res.status(err.statusCode).send(<IResponse>{ status: false, error: err.serializeErrors() });
         return;
     }
 
