@@ -17,6 +17,7 @@ export class RequestValidationError extends CustomError {
     serializeErrors(): IErrorResponse {
         return {
             code: this.errorCode,
+            message: 'Validation error! Please check your fields!',
             errors: this.errors.map((err) => ({
                 name: err.context.label,
                 message: err.message,

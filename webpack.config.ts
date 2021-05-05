@@ -3,7 +3,7 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import path from 'path';
 import { Configuration, DefinePlugin } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
-import WebpackShellPluginNext from 'webpack-shell-plugin-next';
+import { WebpackCustomRunScriptsPlugin } from '@sellerspot/webpack-run-scripts-custom-plugin';
 
 const webpackConfiguration = (env: {
     production?: boolean;
@@ -44,13 +44,8 @@ const webpackConfiguration = (env: {
                 },
             }),
             !isProduction
-                ? new WebpackShellPluginNext({
-                      onDoneWatch: {
-                          scripts: ['npm run build:dev'],
-                          blocking: false,
-                          parallel: true,
-                      },
-                      safe: true,
+                ? new WebpackCustomRunScriptsPlugin({
+                      command: 'npm run build:dev',
                   })
                 : new DefinePlugin({}),
         ],
