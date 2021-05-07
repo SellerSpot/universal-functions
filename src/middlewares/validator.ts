@@ -4,20 +4,26 @@ import { AnySchema, isError, isSchema, ValidationError } from 'joi';
 import { BadRequestError, RequestValidationError } from '../errors';
 import { logger } from '../utilities';
 
+export interface IValidateSchemaProps {
+    bodySchema?: AnySchema;
+    headerSchema?: AnySchema;
+    queryParamSchema?: AnySchema;
+    pathParamSchema?: AnySchema;
+}
+
 /**
+ *  validates the request with passed in schemas
  *
- * @param bodySchema Schema for body
- * @param headerSchema Schema for header
- * @param queryParamSchema Schema for queryparam
- * @param pathParamSchema Schema for pathparam
+ * @param {IValidateSchemaProps} props - validation schemas
+ *
  * @throws validation error if any
  */
-export const validateSchema = (
-    bodySchema?: AnySchema,
-    headerSchema?: AnySchema,
-    queryParamSchema?: AnySchema,
-    pathParamSchema?: AnySchema,
-): RequestHandler => async (req, _, next): Promise<void> => {
+export const validateSchema = (props: IValidateSchemaProps): RequestHandler => async (
+    req,
+    _,
+    next,
+): Promise<void> => {
+    const { bodySchema, headerSchema, pathParamSchema, queryParamSchema } = props;
     const body = req.body;
     const header = req.headers;
     const queryParam = req.query;
@@ -25,8 +31,8 @@ export const validateSchema = (
     try {
         if (isSchema(bodySchema)) await bodySchema.validateAsync(body);
         if (isSchema(headerSchema)) await headerSchema.validateAsync(header);
-        if (isSchema(queryParamSchema)) await headerSchema.validateAsync(queryParam);
-        if (isSchema(pathParamSchema)) await headerSchema.validateAsync(pathParam);
+        if (isSchema(queryParamSchema)) await queryParamSchema.validateAsync(queryParam);
+        if (isSchema(pathParamSchema)) await pathParamSchema.validateAsync(pathParam);
         next();
     } catch (e) {
         logger.error(`Error in schema validation ${e}`);
