@@ -1,11 +1,11 @@
-import { ERROR_CODE, ITenantJWTToken } from '@sellerspot/universal-types';
+import { ERROR_CODE, IUserJwtTokenPayload } from '@sellerspot/universal-types';
 import jwt from 'jsonwebtoken';
 import { PackageConstant } from '../../configs/PackageConstant';
 import { NotAuthorizedError } from '../../errors';
 import { logger } from '../../utilities';
 
 export class JWTManager {
-    static createToken(payload: ITenantJWTToken): string {
+    static createToken(payload: IUserJwtTokenPayload): string {
         const token: string = jwt.sign(
             {
                 ...payload,
@@ -15,9 +15,9 @@ export class JWTManager {
         );
         return token;
     }
-    static compare(suppliedToken: string): ITenantJWTToken {
+    static verify(suppliedToken: string): IUserJwtTokenPayload {
         try {
-            const token = <ITenantJWTToken>jwt.verify(suppliedToken, process.env.APP_SECRET);
+            const token = <IUserJwtTokenPayload>jwt.verify(suppliedToken, process.env.APP_SECRET);
             return token;
         } catch (err) {
             logger.error(`Error while getting jwt token`);

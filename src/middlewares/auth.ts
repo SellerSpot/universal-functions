@@ -1,4 +1,4 @@
-import { ITenantJWTToken } from '@sellerspot/universal-types';
+import { IUserJwtTokenPayload } from '@sellerspot/universal-types';
 import { RequestHandler } from 'express';
 import { NotAuthorizedError } from '../errors';
 import { JWTManager } from '../services/auth';
@@ -6,19 +6,26 @@ import { logger } from '../utilities';
 
 export const auth: RequestHandler = (req, _, next): void => {
     try {
-        if (!req.cookies || !req.headers.origin) {
-            logger.error(`No cookies or current user header found.`);
+        const hasCookies = !!req.cookies;
+        const hasOriginHeader = !!req.headers.origin;
+        const hasQueryParam = !!req.query.domain; // allow query acces from accounts app only
+        if (!hasCookies || !(hasOriginHeader || hasQueryParam)) {
+            logger.error(`No cookies or current user header or query not found found.`);
             throw new NotAuthorizedError();
         }
-        const currentUserURLObj = new URL(req.headers.origin);
-        const currentUserHostName = currentUserURLObj?.hostname;
-        logger.info(`${currentUserHostName} is set as hostname`);
+        let domainName = '';
+        if (hasQueryParam) {
+            domainName = <string>req.query.domain;
+        } else {
+            const currentUserURLObj = new URL(req.headers.origin);
+            domainName = currentUserURLObj?.hostname;
+        }
+        logger.info(`${domainName} is set as hostname`);
         const tenantIdVsToken = req.cookies;
-        logger.debug(`${tenantIdVsToken[currentUserHostName]} is the token`);
-        if (tenantIdVsToken[currentUserHostName]) {
-            const token = tenantIdVsToken[currentUserHostName];
-            const payload = <ITenantJWTToken>JWTManager.compare(token);
-            req.currentTenant = payload;
+        if (tenantIdVsToken[domainName]) {
+            const token = tenantIdVsToken[domainName];
+            const payload = <IUserJwtTokenPayload>JWTManager.verify(token);
+            req.currentTenant = { ...payload, domainName };
             return next();
         }
         throw new NotAuthorizedError();
