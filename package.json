@@ -26,35 +26,12 @@
         "sellerspot",
         "universal-functions"
     ],
-    "author": "RohitRajP",
-    "contributors": [
-        {
-            "name": "Rohit Raj",
-            "email": "rij7u7d@gmail.com",
-            "url": "https://github.com/RohitRajP"
-        },
-        {
-            "name": "ThayalanGR",
-            "email": "grthayalan18@gmail.com",
-            "url": "https://github.com/ThayalanGR"
-        },
-        {
-            "name": "Immanuel Irwin",
-            "email": "noelimmanuel1998@gmail.com",
-            "url": "https://github.com/noelimmi"
-        }
-    ],
+    "author": "Sellerspot",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/SellerSpot/universal-functions/issues"
     },
     "homepage": "https://github.com/SellerSpot/universal-functions#readme",
-    "lint-staged": {
-        "*.{ts,tsx,less}": [
-            "prettier --write"
-        ],
-        "!(*webpack.config).{ts,tsx}": "eslint --fix --max-warnings 0"
-    },
     "devDependencies": {
         "@sellerspot/universal-types": "^1.8.7",
         "@sellerspot/webpack-run-scripts-custom-plugin": "^1.17.3",

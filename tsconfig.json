@@ -16,7 +16,7 @@
         "declarationMap": true,
         "declarationDir": "./dist",
         "outDir": "./dist",
-        "baseUrl": "./src",
+        "baseUrl": "./src"
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*"]
 }
