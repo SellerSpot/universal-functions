@@ -5,11 +5,8 @@ declare global {
         interface ProcessEnv {
             ENV: 'development' | 'production';
             APP_NAME: string;
-            APP_VERSION: string;
-            PORT: string;
-            DATABASE_SERVER_URL: string;
-            DATABASE_SERVER_QUERY: string;
             APP_SECRET: string;
+            DOMAIN: string;
         }
     }
     namespace Express {
