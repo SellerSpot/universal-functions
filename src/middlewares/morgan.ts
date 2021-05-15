@@ -1,3 +1,4 @@
+import { CONFIG } from 'configs/config';
 import morgan, { StreamOptions } from 'morgan';
 import { logger } from '../utilities';
 
@@ -7,6 +8,6 @@ const stream: StreamOptions = {
     write: (message) => logger.http(message),
 };
 
-export const morganMiddleware = morgan(process.env.ENV === 'development' ? 'dev' : 'short', {
+export const morganMiddleware = morgan(CONFIG.ENV === 'development' ? 'dev' : 'short', {
     stream,
 });
