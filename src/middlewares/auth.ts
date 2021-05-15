@@ -12,15 +12,29 @@ import { CONFIG } from '../configs/config';
 export const auth: RequestHandler = (req, _, next): void => {
     try {
         const hasCookies = !!req.cookies;
-        const domainName = getDomainFromOriginOrQuery(req, true);
-        if (![!!hasCookies, !!domainName].every(Boolean)) {
+        const hasAuthHeader = !!req.headers.authorization;
+        const domainName = !hasAuthHeader ? getDomainFromOriginOrQuery(req, true) : null;
+        if (!(hasCookies && domainName) && !hasAuthHeader) {
             logger.error(`No cookies or current user header or query not found found.`);
             throw new NotAuthorizedError();
         }
-        logger.info(`${domainName} is set as hostname`);
+        let token;
         const tenantIdVsToken = req.cookies;
-        if (tenantIdVsToken[domainName]) {
-            const token = tenantIdVsToken[domainName];
+        if (hasCookies && tenantIdVsToken[domainName]) {
+            logger.info(`${domainName} is set as hostname`);
+            token = tenantIdVsToken[domainName];
+        }
+        if (hasAuthHeader) {
+            const authHeader = <string>req.headers.authorization;
+            const authArr = authHeader.split(' ');
+            if (authArr.length === 2) {
+                const scheme = authArr[0];
+                if (/^Bearer$/i.test(scheme)) {
+                    token = authArr[1];
+                }
+            }
+        }
+        if (token) {
             const payload = <IUserJwtTokenPayload>JWTManager.verify(token);
             req.currentTenant = { ...payload, domainName };
             return next();

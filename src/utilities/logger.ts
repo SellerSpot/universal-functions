@@ -19,7 +19,11 @@ if (CONFIG.ENV === 'production') {
 } else {
     transportList.push(
         new transports.Console({
-            format: format.combine(format.colorize({ all: true }), myConsoleFormat),
+            format: format.combine(
+                format.colorize({ all: true }),
+                myConsoleFormat,
+                format.errors({ stack: true }),
+            ),
         }),
     );
 }
