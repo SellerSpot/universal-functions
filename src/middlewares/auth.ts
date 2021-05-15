@@ -13,7 +13,7 @@ export const auth: RequestHandler = (req, _, next): void => {
     try {
         const hasCookies = !!req.cookies;
         const hasAuthHeader = !!req.headers.authorization;
-        const domainName = getDomainFromOriginOrQuery(req, true);
+        const domainName = !hasAuthHeader ? getDomainFromOriginOrQuery(req, true) : null;
         if (!(hasCookies && domainName) && !hasAuthHeader) {
             logger.error(`No cookies or current user header or query not found found.`);
             throw new NotAuthorizedError();
