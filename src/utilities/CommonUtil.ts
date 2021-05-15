@@ -11,4 +11,11 @@ export class CommonUtil {
             }, delay),
         );
     }
+    // static getPropertyVsObject<T, K extends keyof T>(objArr: T[], property: K): Record<T[K], T> {
+    //     const propertyVsObj = <Record<T[K], T>>{};
+    //     objArr.forEach((obj) => {
+    //         const currObjPropertyValue = obj[property];
+    //         propertyVsObj[currObjPropertyValue];
+    //     });
+    // }
 }
