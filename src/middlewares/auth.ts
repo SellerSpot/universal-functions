@@ -65,9 +65,9 @@ export const getDomainFromOriginOrQuery = (req: Request, withHost = false): stri
 const getSanitizedDomainName = (domain: string, withHost = false): string => {
     let sanitizedDomain = domain;
     const aggregatedDomain = domain.split('.');
-    const isCustomDomain = !CONFIG.DOMAIN.split('.').every((item) =>
-        aggregatedDomain.includes(item),
-    );
+    const isCustomDomain = !CONFIG.DOMAIN()
+        .split('.')
+        .every((item) => aggregatedDomain.includes(item));
     if (!isCustomDomain && !withHost) {
         sanitizedDomain = aggregatedDomain[1]; // in the position 1 we could get the actual subdomain name, index 0 will have app prefix
     }
