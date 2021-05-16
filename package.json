@@ -4,7 +4,7 @@
     "description": "Contains all common functions and values shared across all applications in the SellerSpot ecosystem.",
     "main": "dist/index.js",
     "scripts": {
-        "dev": "tsc-watch --onSuccess 'yalc push --no-scripts'",
+        "dev": "tsc-watch --onSuccess \"yalc push --no-scripts\"",
         "build": "webpack --mode production --env production",
         "build:dev": "webpack --mode development --env production && yalc push --no-scripts",
         "lint": "eslint src",
