@@ -10,14 +10,14 @@ export class JWTManager {
             {
                 ...payload,
             },
-            CONFIG.APP_SECRET,
+            CONFIG.APP_SECRET(),
             { expiresIn: CONFIG.JWT_EXPIRE_TIME },
         );
         return token;
     }
     static verify(suppliedToken: string): IUserJwtTokenPayload {
         try {
-            const token = <IUserJwtTokenPayload>jwt.verify(suppliedToken, CONFIG.APP_SECRET);
+            const token = <IUserJwtTokenPayload>jwt.verify(suppliedToken, CONFIG.APP_SECRET());
             return token;
         } catch (err) {
             logger.error(`Error while getting jwt token`);

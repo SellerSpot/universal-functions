@@ -5,7 +5,7 @@ import { CONFIG } from '../configs/config';
 const myConsoleFormat = format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`);
 
 const transportList: Transport[] = [];
-if (CONFIG.ENV === 'production') {
+if (CONFIG.ENV() === 'production') {
     transportList.push(
         new transports.File({
             filename: 'logs/APPLICATION_ERROR.log',
@@ -29,7 +29,7 @@ if (CONFIG.ENV === 'production') {
 }
 
 export const logger = createLogger({
-    level: CONFIG.ENV === 'development' ? 'debug' : 'http',
+    level: CONFIG.ENV() === 'development' ? 'debug' : 'http',
     levels: config.npm.levels,
     defaultMeta: {
         service: CONFIG.APP_NAME,

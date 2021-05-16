@@ -9,6 +9,6 @@ const stream: StreamOptions = {
     write: (message) => logger.http(message),
 };
 
-export const morganMiddleware = morgan(CONFIG.ENV === 'development' ? 'dev' : 'short', {
+export const morganMiddleware = morgan(CONFIG.ENV() === 'development' ? 'dev' : 'short', {
     stream,
 });
