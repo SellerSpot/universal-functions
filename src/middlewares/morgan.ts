@@ -1,5 +1,6 @@
-import { CONFIG } from 'configs/config';
 import morgan, { StreamOptions } from 'morgan';
+
+import { CONFIG } from '../configs/config';
 import { logger } from '../utilities';
 
 // Override the stream method by telling
