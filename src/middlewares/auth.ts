@@ -3,13 +3,13 @@ import {
     ICheckDomainAvailablityRequestQuery,
     IUserJwtTokenPayload,
 } from '@sellerspot/universal-types';
-
 import { NotAuthorizedError } from '../errors';
 import { JWTManager } from '../services/auth';
 import { logger } from '../utilities';
 import { CONFIG } from '../configs/config';
+import { createNamespace } from 'continuation-local-storage';
 
-export const auth: RequestHandler = (req, _, next): void => {
+export const auth: RequestHandler = (req, res, next): void => {
     try {
         const hasCookies = !!req.cookies;
         const hasAuthHeader = !!req.headers.authorization;
@@ -24,27 +24,39 @@ export const auth: RequestHandler = (req, _, next): void => {
             logger.info(`${domainName} is set as hostname`);
             token = tenantIdVsToken[domainName];
         }
-        if (hasAuthHeader) {
-            const authHeader = <string>req.headers.authorization;
-            const authArr = authHeader.split(' ');
-            if (authArr.length === 2) {
-                const scheme = authArr[0];
-                if (/^Bearer$/i.test(scheme)) {
-                    token = authArr[1];
-                }
-            }
+        token = checkAndGetAuthTokenFromHeaders(hasAuthHeader, req);
+        if (!token) {
+            throw new NotAuthorizedError();
         }
-        if (token) {
-            const payload = <IUserJwtTokenPayload>JWTManager.verify(token);
-            req.currentTenant = { ...payload, domainName };
-            return next();
-        }
-        throw new NotAuthorizedError();
+        const payload = <IUserJwtTokenPayload>JWTManager.verify(token);
+        req.currentUser = { ...payload };
+        const ns = createNamespace(CONFIG.APP_NAME());
+        ns.bindEmitter(req);
+        ns.bindEmitter(res);
+        ns.run(() => {
+            ns.set('tenantId', payload.tenantId);
+            ns.set('userId', payload.userId);
+            next();
+        });
     } catch (error) {
         //Catching and throwing because to get below log
         logger.error(`Error in auth middleware ${error}`);
         throw new NotAuthorizedError();
     }
+};
+
+const checkAndGetAuthTokenFromHeaders = (hasAuthHeader: boolean, req: Request): string | null => {
+    if (hasAuthHeader) {
+        const authHeader = <string>req.headers.authorization;
+        const authArr = authHeader.split(' ');
+        if (authArr.length === 2) {
+            const scheme = authArr[0];
+            if (/^Bearer$/i.test(scheme)) {
+                return authArr[1];
+            }
+        }
+    }
+    return null;
 };
 
 export const getDomainFromOriginOrQuery = (req: Request, withHost = false): string => {
