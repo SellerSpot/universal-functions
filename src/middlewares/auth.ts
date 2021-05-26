@@ -3,13 +3,13 @@ import {
     ICheckDomainAvailablityRequestQuery,
     IUserJwtTokenPayload,
 } from '@sellerspot/universal-types';
-
 import { NotAuthorizedError } from '../errors';
 import { JWTManager } from '../services/auth';
 import { logger } from '../utilities';
 import { CONFIG } from '../configs/config';
+import { CLSService } from '../services';
 
-export const auth: RequestHandler = (req, _, next): void => {
+export const auth: RequestHandler = async (req, res, next): Promise<void> => {
     try {
         const hasCookies = !!req.cookies;
         const hasAuthHeader = !!req.headers.authorization;
@@ -23,27 +23,32 @@ export const auth: RequestHandler = (req, _, next): void => {
         if (hasCookies && tenantIdVsToken[domainName]) {
             logger.info(`${domainName} is set as hostname`);
             token = tenantIdVsToken[domainName];
+        } else if (hasAuthHeader) {
+            token = checkAndGetAuthTokenFromHeaders(req);
         }
-        if (hasAuthHeader) {
-            const authHeader = <string>req.headers.authorization;
-            const authArr = authHeader.split(' ');
-            if (authArr.length === 2) {
-                const scheme = authArr[0];
-                if (/^Bearer$/i.test(scheme)) {
-                    token = authArr[1];
-                }
-            }
+        if (!token) {
+            throw new NotAuthorizedError();
         }
-        if (token) {
-            const payload = <IUserJwtTokenPayload>JWTManager.verify(token);
-            req.currentTenant = { ...payload, domainName };
-            return next();
-        }
-        throw new NotAuthorizedError();
+        const payload = <IUserJwtTokenPayload>JWTManager.verify(token);
+        req.currentUser = { ...payload };
+        await CLSService.bindEmitter(req, res);
+        await CLSService.setData(payload);
+        next();
     } catch (error) {
         //Catching and throwing because to get below log
         logger.error(`Error in auth middleware ${error}`);
         throw new NotAuthorizedError();
+    }
+};
+
+const checkAndGetAuthTokenFromHeaders = (req: Request): string | null => {
+    const authHeader = <string>req.headers.authorization;
+    const authArr = authHeader.split(' ');
+    if (authArr.length === 2) {
+        const scheme = authArr[0];
+        if (/^Bearer$/i.test(scheme)) {
+            return authArr[1];
+        }
     }
 };
 

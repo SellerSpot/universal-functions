@@ -11,11 +11,11 @@ export class CommonUtil {
             }, delay),
         );
     }
-    // static getPropertyVsObject<T, K extends keyof T>(objArr: T[], property: K): Record<T[K], T> {
-    //     const propertyVsObj = <Record<T[K], T>>{};
-    //     objArr.forEach((obj) => {
-    //         const currObjPropertyValue = obj[property];
-    //         propertyVsObj[currObjPropertyValue];
-    //     });
-    // }
+    static getPropertyVsObject<T, K extends keyof T>(objArr: T[], property: K): { [k: string]: T } {
+        return objArr.reduce((acc, curr) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const keyValue: any = curr[property];
+            return { ...acc, [keyValue]: curr };
+        }, {});
+    }
 }
