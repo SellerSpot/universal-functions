@@ -34,7 +34,7 @@
     "homepage": "https://github.com/SellerSpot/universal-functions#readme",
     "devDependencies": {
         "@sellerspot/universal-types": "^1.8.8",
-        "@sellerspot/webpack-run-scripts-custom-plugin": "^1.18.3",
+        "@sellerspot/webpack-run-scripts-custom-plugin": "^1.18.4",
         "@types/continuation-local-storage": "^3.2.3",
         "@types/cookie": "^0.4.0",
         "@types/cookie-parser": "^1.4.2",
