@@ -21,12 +21,12 @@ export class AuthUtil {
     public static setCurrentTenant(tenantId: string): void {
         let ns = getNamespace(CONFIG.APP_NAME());
         if (!ns) ns = createNamespace(CONFIG.APP_NAME());
-        //run will create new context and enters to that context overriding any exisiting context in execution
-        ns.enter(
-            ns.run(() => {
-                ns.set('tenantId', tenantId);
-            }),
-        );
+        //checks if there is active context and if not creates a context and enters that context
+        if (!ns.active) {
+            ns.enter(ns.createContext());
+        }
+        //sets tenant Id in current active context
+        ns.set('tenantId', tenantId);
     }
 
     /**
@@ -35,26 +35,26 @@ export class AuthUtil {
     public static setCurrentUser(userId: string): void {
         let ns = getNamespace(CONFIG.APP_NAME());
         if (!ns) ns = createNamespace(CONFIG.APP_NAME());
-        //run will create new context and enters to that context overriding any exisiting context in execution
-        ns.enter(
-            ns.run(() => {
-                ns.set('userId', userId);
-            }),
-        );
+        //checks if there is active context and if not creates a context and enters that context
+        if (!ns.active) {
+            ns.enter(ns.createContext());
+        }
+        //sets user Id in current active context
+        ns.set('userId', userId);
     }
 
     /**
      * Should be used with CAUTION as it can lead to data leak
      */
-    public static setCurrentContext(authPayload: IUserJwtTokenPayload): void {
+    public static setCurrentScope(authPayload: IUserJwtTokenPayload): void {
         let ns = getNamespace(CONFIG.APP_NAME());
         if (!ns) ns = createNamespace(CONFIG.APP_NAME());
-        //run will create new context and enters to that context overriding any exisiting context in execution
-        ns.enter(
-            ns.run(() => {
-                ns.set('tenantId', authPayload.tenantId);
-                ns.set('userId', authPayload.userId);
-            }),
-        );
+        //checks if there is active context and if not creates a context and enters that context
+        if (!ns.active) {
+            ns.enter(ns.createContext());
+        }
+        //sets current scope
+        ns.set('tenantId', authPayload.tenantId);
+        ns.set('userId', authPayload.userId);
     }
 }
