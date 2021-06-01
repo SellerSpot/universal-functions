@@ -1,57 +1,43 @@
 import { createNamespace, getNamespace } from 'continuation-local-storage';
-import { RequestHandler } from 'express';
+import { NextFunction, Request, Response, RequestHandler } from 'express';
 import { IUserJwtTokenPayload } from '@sellerspot/universal-types';
 
 import { CONFIG } from '../configs/config';
 
-/**
- * Continuation local storage
- */
 export default class CLSService {
     static clearScope: RequestHandler = (_, __, next): void => {
         const ns = getNamespace(CONFIG.APP_NAME());
-        if (ns) {
-            //Sets as undefined once a request is completed to current active context in execution flow
-            ns.bind(() => {
-                ns.set('tenantId', void 0);
-                ns.set('userId', void 0);
-            });
+        if (ns && ns.active) {
+            /**
+             * Exits from current Context so all values set in Context will be removed
+             * Note -> if any setTimeOut or similar timeout funtions is pushed to event loop with context,
+             * it won't be available at time of execution
+             **/
+            ns.exit(ns.active);
         }
         next();
     };
 
-    static bindEmitter = async (
-        req: NodeJS.EventEmitter,
-        res: NodeJS.EventEmitter,
-    ): Promise<boolean> => {
-        return new Promise((resolve) => {
-            let ns = getNamespace(CONFIG.APP_NAME());
-            if (!ns) ns = createNamespace(CONFIG.APP_NAME());
+    static setScope = (
+        currentScope: IUserJwtTokenPayload,
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): void => {
+        let ns = getNamespace(CONFIG.APP_NAME());
+        if (!ns) ns = createNamespace(CONFIG.APP_NAME());
+        ns.run(() => {
+            const { tenantId, userId } = currentScope;
+            /**
+             * reason for binding emitter means Requst and Response object is extended from
+             * [Node EventEmitter object ](@link https://nodejs.org/api/events.html) to catch async errors
+             * hence to bind event Emitter to context this is done
+             */
             ns.bindEmitter(req);
             ns.bindEmitter(res);
-            resolve(true);
+            ns.set('tenantId', tenantId);
+            ns.set('userId', userId);
+            next();
         });
-    };
-
-    static setData = async (data: Partial<IUserJwtTokenPayload>): Promise<boolean> => {
-        return new Promise((resolve) => {
-            let ns = getNamespace(CONFIG.APP_NAME());
-            if (!ns) ns = createNamespace(CONFIG.APP_NAME());
-            ns.enter(
-                ns.run(() => {
-                    const dataKeys = <(keyof IUserJwtTokenPayload)[]>Object.keys(data);
-                    dataKeys.map((key) => {
-                        ns.set(key, data[key]);
-                    });
-                    resolve(true);
-                }),
-            );
-        });
-    };
-
-    static getData = (key: keyof IUserJwtTokenPayload): string => {
-        const ns = getNamespace(CONFIG.APP_NAME());
-        const tenantId = ns?.get(key);
-        return <string>tenantId;
     };
 }
