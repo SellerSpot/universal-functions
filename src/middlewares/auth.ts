@@ -31,9 +31,7 @@ export const auth: RequestHandler = async (req, res, next): Promise<void> => {
         }
         const payload = <IUserJwtTokenPayload>JWTManager.verify(token);
         req.currentUser = { ...payload };
-        await CLSService.bindEmitter(req, res);
-        await CLSService.setData(payload);
-        next();
+        CLSService.setScope(payload, req, res, next);
     } catch (error) {
         //Catching and throwing because to get below log
         logger.error(`Error in auth middleware ${error}`);
