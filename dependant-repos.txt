@@ -1,2 +1,4 @@
 auth-server
+core-server
+pos-server
 database-models
