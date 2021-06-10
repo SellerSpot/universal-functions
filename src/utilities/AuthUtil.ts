@@ -2,16 +2,20 @@ import { CONFIG } from '../configs/config';
 import { getNamespace, createNamespace } from 'continuation-local-storage';
 import { IUserJwtTokenPayload } from '@sellerspot/universal-types';
 
+type authTokenKey = 'userId' | 'tenantId';
+
 export class AuthUtil {
     public static getCurrentUserId(): string {
+        const authKey: authTokenKey = 'userId';
         const ns = getNamespace(CONFIG.APP_NAME());
-        const tenantId = <string>ns.get('tenantId');
+        const tenantId = <string>ns.get(authKey);
         return tenantId;
     }
 
     public static getCurrentTenantId(): string {
+        const authKey: authTokenKey = 'tenantId';
         const ns = getNamespace(CONFIG.APP_NAME());
-        const tenantId = <string>ns.get('tenantId');
+        const tenantId = <string>ns.get(authKey);
         return tenantId;
     }
 
