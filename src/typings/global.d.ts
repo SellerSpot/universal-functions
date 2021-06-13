@@ -9,6 +9,10 @@ declare global {
             DOMAIN: string;
         }
     }
+
+    interface SyntaxError {
+        status?: number;
+    }
     namespace Express {
         interface Request {
             currentUser?: IUserJwtTokenPayload;
