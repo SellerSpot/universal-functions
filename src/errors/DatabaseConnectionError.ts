@@ -11,6 +11,6 @@ export class DatabaseConnectionError extends CustomError {
     }
 
     serializeErrors(): IErrorResponse {
-        return { code: this.errorCode };
+        return { code: this.errorCode, key: ERROR_CODE[this.errorCode] };
     }
 }

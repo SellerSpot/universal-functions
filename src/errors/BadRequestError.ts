@@ -1,9 +1,4 @@
-import {
-    ERROR_CODE,
-    ERROR_CODE_VALUE_KEY,
-    IErrorResponse,
-    STATUS_CODE,
-} from '@sellerspot/universal-types';
+import { ERROR_CODE, IErrorResponse, STATUS_CODE } from '@sellerspot/universal-types';
 import { CustomError } from './CustomError';
 
 export class BadRequestError extends CustomError {
@@ -21,7 +16,7 @@ export class BadRequestError extends CustomError {
     serializeErrors(): IErrorResponse {
         return {
             code: this.errorCode,
-            key: ERROR_CODE_VALUE_KEY[this.errorCode],
+            key: ERROR_CODE[this.errorCode],
             message: this.message,
         };
     }

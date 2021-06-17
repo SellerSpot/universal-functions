@@ -14,6 +14,6 @@ export class ServerError extends CustomError {
     }
 
     serializeErrors(): IErrorResponse {
-        return { code: this.errorCode, message: this.message };
+        return { code: this.errorCode, key: ERROR_CODE[this.errorCode], message: this.message };
     }
 }
