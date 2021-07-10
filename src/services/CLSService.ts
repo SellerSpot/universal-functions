@@ -1,12 +1,20 @@
-import { createNamespace, getNamespace } from 'continuation-local-storage';
+import { createNamespace, getNamespace, Namespace } from 'cls-hooked';
 import { NextFunction, Request, Response, RequestHandler } from 'express';
 import { IUserJwtTokenPayload } from '@sellerspot/universal-types';
 
 import { CONFIG } from '../configs/config';
 
 export default class CLSService {
+    static getNamespace(namespace: string): Namespace | undefined {
+        return getNamespace(namespace);
+    }
+
+    static createNamespace(namespace: string): Namespace | undefined {
+        return createNamespace(namespace);
+    }
+
     static clearScope: RequestHandler = (_, __, next): void => {
-        const ns = getNamespace(CONFIG.APP_NAME());
+        const ns = CLSService.getNamespace(CONFIG.APP_NAME());
         if (ns && ns.active) {
             /**
              * Exits from current Context so all values set in Context will be removed
@@ -24,8 +32,8 @@ export default class CLSService {
         res: Response,
         next: NextFunction,
     ): void => {
-        let ns = getNamespace(CONFIG.APP_NAME());
-        if (!ns) ns = createNamespace(CONFIG.APP_NAME());
+        let ns = CLSService.getNamespace(CONFIG.APP_NAME());
+        if (!ns) ns = CLSService.createNamespace(CONFIG.APP_NAME());
         ns.run(() => {
             const { tenantId, userId } = currentScope;
             /**
