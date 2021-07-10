@@ -1,4 +1,4 @@
-import { CONFIG } from '../configs/config';
+import { CONFIG } from '../../configs/config';
 import { getNamespace, createNamespace } from 'continuation-local-storage';
 import { IUserJwtTokenPayload } from '@sellerspot/universal-types';
 
