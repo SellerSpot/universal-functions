@@ -3,7 +3,7 @@
         "sourceMap": false,
         "noImplicitAny": true,
         "module": "CommonJS",
-        "target": "ES6",
+        "target": "es2018",
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
         "removeComments": false,
         "allowSyntheticDefaultImports": true,
