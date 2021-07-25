@@ -18,26 +18,28 @@ export interface IValidateSchemaProps {
  *
  * @throws validation error if any
  */
-export const validateSchema =
-    (props: IValidateSchemaProps): RequestHandler =>
-    async (req, _, next): Promise<void> => {
-        const { bodySchema, headerSchema, pathParamSchema, queryParamSchema } = props;
-        const body = req.body;
-        const header = req.headers;
-        const queryParam = req.query;
-        const pathParam = req.params;
-        try {
-            if (isSchema(bodySchema)) await bodySchema.validateAsync(body);
-            if (isSchema(headerSchema)) await headerSchema.validateAsync(header);
-            if (isSchema(queryParamSchema)) await queryParamSchema.validateAsync(queryParam);
-            if (isSchema(pathParamSchema)) await pathParamSchema.validateAsync(pathParam);
-            next();
-        } catch (e) {
-            logger.error(`Error in schema validation ${e}`);
-            if (isError(e)) {
-                const validationError = <ValidationError>e;
-                throw new RequestValidationError(validationError.details);
-            }
-            throw new BadRequestError(ERROR_CODE.VALIDATION_ERROR);
+export const validateSchema = (props: IValidateSchemaProps): RequestHandler => async (
+    req,
+    _,
+    next,
+): Promise<void> => {
+    const { bodySchema, headerSchema, pathParamSchema, queryParamSchema } = props;
+    const body = req.body;
+    const header = req.headers;
+    const queryParam = req.query;
+    const pathParam = req.params;
+    try {
+        if (isSchema(bodySchema)) await bodySchema.validateAsync(body);
+        if (isSchema(headerSchema)) await headerSchema.validateAsync(header);
+        if (isSchema(queryParamSchema)) await queryParamSchema.validateAsync(queryParam);
+        if (isSchema(pathParamSchema)) await pathParamSchema.validateAsync(pathParam);
+        next();
+    } catch (e) {
+        logger.error(`Error in schema validation ${e}`);
+        if (isError(e)) {
+            const validationError = <ValidationError>e;
+            throw new RequestValidationError(validationError.details);
         }
-    };
+        throw new BadRequestError(ERROR_CODE.VALIDATION_ERROR);
+    }
+};
